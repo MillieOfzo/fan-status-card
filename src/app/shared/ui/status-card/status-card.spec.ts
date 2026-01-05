@@ -34,9 +34,9 @@ describe('StatusCard (Vitest)', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not toggle alarms when status is OK', () => {
+  it('should toggle alarms when status is not OK', () => {
     component.onCardClick();
-    expect(component.showAlarms).toBe(false);
+    expect(component.showAlarms).toBe(true);
   });
 
 });

@@ -51,7 +51,7 @@ import { IStatusCard } from './contracts/status-card.interface';
 export class StatusCard {
   @Input({ required: true }) data!: IStatusCard;
 
-  showAlarms = false;
+  showAlarms = true;
 
   onCardClick() {
     if (this.data.status === 'error' && this.data.alarms?.length) {

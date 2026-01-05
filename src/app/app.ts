@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { combineLatest, map } from 'rxjs';
 import { AlarmTestDataService } from './core/data/alarm-test-data.service';
-import { STATIC_DASHBOARD_CARDS, TestDataService } from './core/data/test-data.service';
+import { TestDataService } from './core/data/test-data.service';
 import { Co2Evaluator } from './core/status/co2.evaluator';
 import { HumidityEvaluator } from './core/status/humidity.evaluator';
 import { PressureEvaluator } from './core/status/pressure.evaluator';
@@ -14,6 +14,7 @@ import { StatusCard } from './shared/ui/status-card/status-card';
   imports: [StatusCard, CommonModule],
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App {
   private readonly data = inject(TestDataService)

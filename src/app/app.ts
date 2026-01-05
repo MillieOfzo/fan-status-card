@@ -1,11 +1,12 @@
-import {Component, inject} from '@angular/core';
-import {TestDataService} from './core/data/test-data.service';
-import {TemperatureEvaluator} from './core/status/temperature.evaluator';
-import {HumidityEvaluator} from './core/status/humidity.evaluator';
-import {combineLatest, map, startWith} from 'rxjs';
-import {StatusCard} from './shared/ui/status-card/status-card';
-import {CommonModule} from '@angular/common';
-import {PressureEvaluator} from './core/status/pressure.evaluator';
+import { Component, inject } from '@angular/core';
+import { TestDataService } from './core/data/test-data.service';
+import { TemperatureEvaluator } from './core/status/temperature.evaluator';
+import { HumidityEvaluator } from './core/status/humidity.evaluator';
+import { combineLatest, map, startWith } from 'rxjs';
+import { StatusCard } from './shared/ui/status-card/status-card';
+import { CommonModule } from '@angular/common';
+import { PressureEvaluator } from './core/status/pressure.evaluator';
+import { Co2Evaluator } from './core/status/co2.evaluator';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,7 @@ export class App {
   private readonly tempEval = new TemperatureEvaluator();
   private readonly humEval = new HumidityEvaluator();
   private readonly pressureEvaluator = new PressureEvaluator();
-
+  private readonly co2Evaluator = new Co2Evaluator();
 
   temperatureVm$ = this.data.temperature$.pipe(
     map(value => {
@@ -62,13 +63,17 @@ export class App {
     startWith(null)
   );
 
-  // Array van data sets
-  cardsVm$ = combineLatest([
-    this.temperatureVm$,
-    this.humidityVm$,
-    this.pressureVm$
-  ]).pipe(
-    map(([temp, hum, press]) => [temp, hum, press])
+  co2Vm$ = this.data.co2$.pipe(
+    map(value => {
+      const result = this.co2Evaluator.evaluate(value);
+      return {
+        title: 'CO₂',
+        value: value.toFixed(0),
+        suffix: 'ppm',
+        ...result
+      };
+    }),
+    startWith(null)
   );
 
 

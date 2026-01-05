@@ -55,7 +55,7 @@ export class StatusCard {
 
   onCardClick() {
     if (this.data.status === 'error' && this.data.alarms?.length) {
-      this.showAlarms = !this.showAlarms;
+      setTimeout(() => this.showAlarms = !this.showAlarms);
     }
   }
 }

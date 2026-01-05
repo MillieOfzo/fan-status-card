@@ -37,15 +37,55 @@
     <!-- Content -->
     <main class="flex-1 overflow-auto p-6">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <app-status-card [data]="(temperatureVm$ | async)!" />
-        <app-status-card [data]="(humidityVm$ | async)!" />
-        <app-status-card [data]="(pressureVm$ | async)!" />
-        <app-status-card [data]="(co2Vm$ | async)!" />
 
-        <ng-container *ngFor="let card of (staticCards$ | async)!">
-          <app-status-card [data]="card"></app-status-card>
+        <!-- Temperature -->
+        @if (temperatureVm$ | async; as temp) {
+        <app-status-card [data]="temp" />
+        } @else {
+        <ng-container [ngTemplateOutlet]="cardSkeleton" />
+        }
+
+        <!-- Humidity -->
+        @if (humidityVm$ | async; as hum) {
+        <app-status-card [data]="hum" />
+        } @else {
+        <ng-container [ngTemplateOutlet]="cardSkeleton" />
+        }
+
+        <!-- Pressure -->
+        @if (pressureVm$ | async; as pressure) {
+        <app-status-card [data]="pressure" />
+        } @else {
+        <ng-container [ngTemplateOutlet]="cardSkeleton" />
+        }
+
+        <!-- CO₂ -->
+        @if (co2Vm$ | async; as co2) {
+        <app-status-card [data]="co2" />
+        } @else {
+        <ng-container [ngTemplateOutlet]="cardSkeleton" />
+        }
+
+        <!-- Static cards -->
+        @if (staticCards$ | async; as cards) {
+        <ng-container *ngFor="let card of cards">
+          <app-status-card [data]="card" />
         </ng-container>
+        } @else {
+        <!-- show same number of skeletons as expected cards -->
+        <ng-container *ngFor="let _ of [1,2,3,4]">
+          <ng-container [ngTemplateOutlet]="cardSkeleton" />
+        </ng-container>
+        }
+
       </div>
+      <ng-template #cardSkeleton>
+        <div class="bg-white flex flex-col rounded-2xl p-6 shadow animate-pulse space-y-4">
+          <div class="h-6 w-3/4 bg-gray-200 rounded"></div>
+          <div class="h-16 sm:h-20 w-full bg-gray-200 rounded"></div>
+          <div class="h-5 w-1/2 bg-gray-300 rounded"></div>
+        </div>
+      </ng-template>
     </main>
 
     <!-- Footer -->

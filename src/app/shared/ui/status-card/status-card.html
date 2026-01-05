@@ -1,54 +1,44 @@
-<!-- <div class="bg-card flex flex-auto flex-col overflow-hidden rounded-2xl p-6 shadow transition-colors duration-300"> -->
 <div class="bg-card flex flex-auto flex-col overflow-hidden rounded-2xl p-6 shadow transition-all duration-300"
   [ngClass]="{
-    'bg-red-50 ring-2 ring-red-500  cursor-pointer': data?.status === 'error',
-    'bg-white': data?.status !== 'error'
-  }" (click)="onCardClick()">
+       'bg-red-50 ring-2 ring-red-500 cursor-pointer': data.status === 'error',
+       'bg-white': data.status !== 'error'
+     }" (click)="onCardClick()">
 
-
-  <!-- Skeleton / Placeholder -->
-  @if(!data) {
-  <div class="animate-pulse flex flex-col space-y-4">
-    <div class="h-6 w-3/4 bg-gray-200 rounded"></div>
-    <div class="h-16 sm:h-20 w-full bg-gray-200 rounded"></div>
-    <div class="h-5 w-1/2 bg-gray-300 rounded"></div>
-  </div>
-  }
-
-  <!-- Data Loaded -->
-  @if(data){
   <div class="flex items-start justify-between">
-    <div class="truncate text-lg font-medium leading-6 tracking-tight">{{ data.title }}</div>
+    <div class="truncate text-lg font-medium leading-6 tracking-tight">
+      {{ data.title }}
+    </div>
   </div>
 
   <div class="mt-2 flex flex-col items-center">
     <div class="flex items-baseline space-x-1">
       <span class="text-7xl font-bold leading-none tracking-tight sm:text-8xl" [ngClass]="{
-                'text-green-500': data.status === 'ok',
-                'text-yellow-500': data.status === 'warning',
-                'text-red-500': data.status === 'error'
-              }">
+              'text-green-500': data.status === 'ok',
+              'text-yellow-500': data.status === 'warning',
+              'text-red-500': data.status === 'error'
+            }">
         {{ data.value }}
       </span>
+
       <span class="text-3xl font-bold" [ngClass]="{
-                'text-green-500': data.status === 'ok',
-                'text-yellow-500': data.status === 'warning',
-                'text-red-500': data.status === 'error'
-              }">
+              'text-green-500': data.status === 'ok',
+              'text-yellow-500': data.status === 'warning',
+              'text-red-500': data.status === 'error'
+            }">
         {{ data.suffix }}
       </span>
     </div>
 
     <div class="text-lg font-medium" [ngClass]="{
-             'text-green-600': data.status === 'ok',
-             'text-yellow-600': data.status === 'warning',
-             'text-red-600': data.status === 'error'
-           }">
+           'text-green-600': data.status === 'ok',
+           'text-yellow-600': data.status === 'warning',
+           'text-red-600': data.status === 'error'
+         }">
       {{ data.label }}
     </div>
   </div>
 
-  @if(showAlarms && data.status === 'error' && data.alarms?.length){
+  @if (showAlarms && data.status === 'error' && data.alarms?.length) {
   <div class="mt-4 border-t pt-3 space-y-2" style="border-color: lightgrey;">
     <div *ngFor="let alarm of data.alarms" class="text-sm text-red-700 flex justify-between">
       <span>{{ alarm.message }}</span>
@@ -57,6 +47,5 @@
       </span>
     </div>
   </div>
-  }
   }
 </div>

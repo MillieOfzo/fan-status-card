@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { TestDataService } from './core/data/test-data.service';
+import { activityCard, alarmCard, energyCard, TestDataService, ventilationCard, waterUsageCard } from './core/data/test-data.service';
 import { TemperatureEvaluator } from './core/status/temperature.evaluator';
 import { HumidityEvaluator } from './core/status/humidity.evaluator';
 import { combineLatest, map, startWith } from 'rxjs';
@@ -15,14 +15,24 @@ import { Co2Evaluator } from './core/status/co2.evaluator';
   styleUrls: ['./app.css'],
 })
 export class App {
-  sidebarOpen = false;
-
   private readonly data = inject(TestDataService)
 
   private readonly tempEval = new TemperatureEvaluator();
   private readonly humEval = new HumidityEvaluator();
   private readonly pressureEvaluator = new PressureEvaluator();
   private readonly co2Evaluator = new Co2Evaluator();
+
+
+  sidebarOpen = false;
+
+  staticCards = [
+    ventilationCard,
+    waterUsageCard,
+    energyCard,
+    alarmCard,
+    activityCard
+  ];
+
 
   temperatureVm$ = this.data.temperature$.pipe(
     map(value => {

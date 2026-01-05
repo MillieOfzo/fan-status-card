@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {IStatusCard} from './contracts/status-card.interface';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { IStatusCard } from './contracts/status-card.interface';
 
 /**
  * Herbruikbare StatusCardComponent voor dashboards.
@@ -15,9 +15,11 @@ import {IStatusCard} from './contracts/status-card.interface';
  * const tempCard: IStatusCard = {
  *   title: 'Temperatuur',
  *   value: '21',
- *   prefix: '°C',
+ *   suffix: '°C',
  *   status: StatusLevel.OK,
  *   label: 'Normaal'
+ *   alarms: [],
+ *   title: string;
  * };
  * ```
  *
@@ -47,5 +49,13 @@ import {IStatusCard} from './contracts/status-card.interface';
   styleUrl: './status-card.scss',
 })
 export class StatusCard {
-  @Input({required: true}) data!: IStatusCard;
+  @Input({ required: true }) data!: IStatusCard;
+
+  showAlarms = false;
+
+  onCardClick() {
+    if (this.data.status === 'error' && this.data.alarms?.length) {
+      this.showAlarms = !this.showAlarms;
+    }
+  }
 }

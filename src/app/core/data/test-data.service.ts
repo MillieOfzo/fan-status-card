@@ -1,7 +1,47 @@
 import { Injectable } from '@angular/core';
-import { interval, map, timer } from 'rxjs';
-import { StatusLevel } from '../../shared/ui/status-card/contracts/status-level.enum';
+import { delay, map, of, timer } from 'rxjs';
 import { IStatusCard } from '../../shared/ui/status-card/contracts/status-card.interface';
+import { StatusLevel } from '../../shared/ui/status-card/contracts/status-level.enum';
+import { STATIC_ALARMS } from './alarm-test-data.service';
+
+export const STATIC_DASHBOARD_CARDS: IStatusCard[] = [
+  {
+    title: 'Ventilatie',
+    value: '42',
+    suffix: '%',
+    status: StatusLevel.Error,
+    label: 'Beperkt',
+    alarms: STATIC_ALARMS.ventilation,
+    // history: [65, 60, 55, 48, 42]
+  },
+
+  {
+    title: 'Waterverbruik',
+    value: '820',
+    suffix: 'L/dag',
+    status: StatusLevel.Warning,
+    label: 'Afwijkend',
+    alarms: STATIC_ALARMS.water,
+    // history: [1200, 1150, 1100, 950, 820]
+  },
+
+  {
+    title: 'Energie',
+    value: '24.8',
+    suffix: 'kWh',
+    status: StatusLevel.Warning,
+    label: 'Piek',
+    alarms: STATIC_ALARMS.energy,
+  },
+
+  {
+    title: 'Dieractiviteit',
+    value: '71',
+    suffix: '%',
+    status: StatusLevel.OK,
+    label: 'Normaal',
+  }
+];
 
 @Injectable({ providedIn: 'root' })
 export class TestDataService {
@@ -20,41 +60,8 @@ export class TestDataService {
   co2$ = timer(1200, 4500).pipe(
     map(() => 1500 + Math.random() * (3500 - 1500))
   );
+
+  staticData$ = of(STATIC_DASHBOARD_CARDS).pipe(
+    delay(1200)
+  );
 }
-
-export const ventilationCard: IStatusCard = {
-  title: 'Ventilatie',
-  value: '72',
-  suffix: '%',
-  status: StatusLevel.OK,
-  label: 'Automatisch'
-};
-
-export const waterUsageCard: IStatusCard = {
-  title: 'Waterverbruik',
-  value: '1.240',
-  suffix: 'L/dag',
-  status: StatusLevel.OK,
-  label: 'Normaal'
-};
-export const energyCard: IStatusCard = {
-  title: 'Energie',
-  value: '18.6',
-  suffix: 'kWh',
-  status: StatusLevel.Warning,
-  label: 'Bovengemiddeld'
-};
-export const alarmCard: IStatusCard = {
-  title: 'Alarmen',
-  value: '1',
-  suffix: '',
-  status: StatusLevel.Warning,
-  label: 'Actief'
-};
-export const activityCard: IStatusCard = {
-  title: 'Dieractiviteit',
-  value: '94',
-  suffix: '%',
-  status: StatusLevel.OK,
-  label: 'Rustig'
-};

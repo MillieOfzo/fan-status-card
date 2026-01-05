@@ -1,4 +1,6 @@
-import {StatusLevel} from './status-level.enum';
+import { IAlarm } from './alarm.interface';
+import { StatusLevel } from './status-level.enum';
+
 
 /**
  * Interface voor het contract van een statuskaart.
@@ -15,7 +17,8 @@ import {StatusLevel} from './status-level.enum';
  *   value: '22.5',
  *   suffix: '°C'
  *   status: StatusLevel.OK,
- *   label: 'Normaal'
+ *   alarms: [],
+ *   label: 'Normaal' * 
  * };
  *
  * @example
@@ -24,7 +27,8 @@ import {StatusLevel} from './status-level.enum';
  *   title: 'Luchtvochtigheid',
  *   value: '75',
  *   suffix: '%'
- *   status: StatusLevel.Warning,
+ *   status: StatusLevel.Error,
+ *   alarms: ['Ventilator 1 werkt niet'],
  *   label: 'Hoog'
  * };
  *
@@ -38,4 +42,5 @@ export interface IStatusCard {
   suffix?: string;
   status: StatusLevel;
   label: string;
+  alarms?: IAlarm[];
 }

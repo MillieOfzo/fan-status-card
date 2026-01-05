@@ -41,8 +41,8 @@
         <app-status-card [data]="(humidityVm$ | async)!" />
         <app-status-card [data]="(pressureVm$ | async)!" />
         <app-status-card [data]="(co2Vm$ | async)!" />
- 
-        <ng-container *ngFor="let card of staticCards">
+
+        <ng-container *ngFor="let card of (staticCards$ | async)!">
           <app-status-card [data]="card"></app-status-card>
         </ng-container>
       </div>

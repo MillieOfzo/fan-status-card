@@ -11,7 +11,8 @@ The dashboard demonstrates:
 - Clickable cards showing **alarms per metric**  
 - Responsive layout with **collapsible sidebar** for mobile  
 - Customizable styling with **Tailwind CSS**  
-- Configurable thresholds per evaluator via `IThresholdConfig`
+- Dynamic Status Cards that can be created, edited, and persisted through a wizard
+- Configurable OK, Warning, and Error labels per card  
 
 ---
 
@@ -37,10 +38,14 @@ Once the server is running, open your browser and navigate to `http://localhost:
 ## Usage
 
 - Live data streams:
-    - Temperature (temperature$)
-    - Humidity (humidity$)
-    - Pressure (pressure$)
-    - CO₂ (co2$)
+  - Temperature (temperature$)
+  - Humidity (humidity$)
+  - Pressure (pressure$)
+  - CO₂ (co2$)
+  - Ventilation (ventilation$)
+  - Water (water$)
+  - Energy (energy$)
+  - Animal Activity (animalActivity$)
 
 - Static demo cards (Ventilation, Water, Energy, Animal Activity)
     - Cards load after a short delay to display skeletons first
@@ -51,9 +56,16 @@ Once the server is running, open your browser and navigate to `http://localhost:
     - Clicking a card toggles an alarm detail list
     - Alarms are categorized as Info, Warning, or Critical
 
-- Thresholds:
-    - Each evaluator uses IThresholdConfig to define warning and error ranges
-    - Thresholds are configurable per metric
+- Thresholds & Labels
+    - Each evaluator uses IThresholdConfig or dynamic card config to define warning and error ranges
+    - Thresholds and labels (OK, Warning, Error) are configurable per metric
+    - Dynamic status cards can be created/edited via the Settings Wizard
+
+- Dynamic Status Cards
+    - Create new cards and assign them to a data stream
+    - Configure thresholds and custom labels
+    - Persisted in local storage and reactive across the dashboard
+    - Only editable after selecting the card from the list in the wizard
 
 ---
 

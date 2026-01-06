@@ -1,8 +1,10 @@
 // settings.service.ts
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AppSettings } from './settings.model';
-const STORAGE_KEY = 'app_settings_v1';
+import { IDynamicEvaluatorConfig } from '../../core/status/dynamic.evaluator';
+const APP_SETTINGS_KEY = 'app_settings_v1';
+const STATUS_CARDS_KEY = 'status_cards_v1';
 
 const DEFAULT_SETTINGS: AppSettings = {
     darkMode: false,
@@ -38,11 +40,58 @@ export class SettingsService {
 
     update(settings: AppSettings) {
         this.settings$.next(settings);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+        localStorage.setItem(APP_SETTINGS_KEY, JSON.stringify(settings));
     }
 
     private loadSettings(): AppSettings {
-        const saved = localStorage.getItem(STORAGE_KEY);
+        const saved = localStorage.getItem(APP_SETTINGS_KEY);
         return saved ? JSON.parse(saved) : DEFAULT_SETTINGS;
+    }
+
+
+
+    private _statusCardConfigs = signal<IDynamicEvaluatorConfig[]>(this.loadFromStorage());
+
+    get statusCardConfigs() { return this._statusCardConfigs.asReadonly(); }
+
+    private saveToStorage(configs: IDynamicEvaluatorConfig[]) {
+        localStorage.setItem(STATUS_CARDS_KEY, JSON.stringify(configs));
+    }
+
+    private loadFromStorage(): IDynamicEvaluatorConfig[] {
+        const stored = localStorage.getItem(STATUS_CARDS_KEY);
+        if (stored) {
+            try {
+                return JSON.parse(stored) as IDynamicEvaluatorConfig[];
+            } catch {
+                return []; // fallback
+            }
+        }
+        // fallback default
+        return [
+            { type: 'temperature', title: 'Temperatuur', source: 'temperature$', suffix: '°C', warningMin: 30, errorMin: 40 },
+            { type: 'co2', title: 'CO₂', source: 'co2$', suffix: 'ppm', warningMin: 1800, errorMin: 2800 }
+        ];
+    }
+
+    addCard(config: IDynamicEvaluatorConfig) {
+        this._statusCardConfigs.update(list => {
+            const updated = [...list, config];
+            this.saveToStorage(updated);
+            return updated;
+        });
+    }
+
+    updateCards(configs: IDynamicEvaluatorConfig[]) {
+        this._statusCardConfigs.set(configs);
+        this.saveToStorage(configs);
+    }
+
+    removeCard(index: number) {
+        this._statusCardConfigs.update(list => {
+            const updated = list.filter((_, i) => i !== index);
+            this.saveToStorage(updated);
+            return updated;
+        });
     }
 }

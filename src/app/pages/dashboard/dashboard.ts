@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { StatusCard } from '../../shared/ui/status-card/status-card';
-import { combineLatest, map, switchMap, timer } from 'rxjs';
+import { combineLatest, map, Observable, switchMap, timer } from 'rxjs';
 import { AlarmTestDataService } from '../../core/data/alarm-test-data.service';
 import { TestDataService } from '../../core/data/test-data.service';
 import { Co2Evaluator } from '../../core/status/co2.evaluator';
@@ -9,6 +9,8 @@ import { PressureEvaluator } from '../../core/status/pressure.evaluator';
 import { TemperatureEvaluator } from '../../core/status/temperature.evaluator';
 import { CommonModule } from '@angular/common';
 import { SettingsService } from '../settings/settings.service';
+import { DynamicEvaluator } from '../../core/status/dynamic.evaluator';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,9 +31,6 @@ export class Dashboard {
     warningMin: 1800,
     errorMin: 2800
   });
-
-
-  staticCards$ = this.data.staticData$
 
   temperatureVm$ = combineLatest([
     this.data.temperature$,
@@ -102,5 +101,21 @@ export class Dashboard {
     })
   );
 
-
+  // Dynamische statuscards
+  cardsVm$ = toObservable(this.settings.statusCardConfigs).pipe(
+    map(configs => configs.map(config => {
+      const evaluator = new DynamicEvaluator(config);
+      const obs$ = (this.data as any)[config.source] as Observable<number>;
+      return combineLatest([obs$, this.alarmService.activeAlarms$]).pipe(
+        map(([value, alarms]) => ({
+          title: config.title,
+          value: value.toFixed(0),
+          suffix: config.suffix,
+          ...evaluator.evaluate(value),
+          alarms: alarms.filter(a => a.source === config.title)
+        }))
+      );
+    })),
+    switchMap(cardObservables => combineLatest(cardObservables))
+  );
 }

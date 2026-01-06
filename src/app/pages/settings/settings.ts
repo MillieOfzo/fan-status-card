@@ -16,8 +16,6 @@ export class Settings {
 
   activeTab = signal<'display' | 'data' | 'sensors' | 'alarms'>('display');
 
-
-
   form = this.fb.group({
     darkMode: false,
     dataSource: 'test',

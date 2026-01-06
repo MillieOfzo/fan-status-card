@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { DarkModeService } from './shared/services/dark-mode.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,7 @@ import { RouterModule, RouterOutlet } from '@angular/router';
   styleUrls: ['./app.css']
 })
 export class App {
+  private darkMode = inject(DarkModeService);
 
   sidebarOpen = false;
 

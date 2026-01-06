@@ -23,20 +23,6 @@
                 Databron & Interval
             </button>
 
-            <button (click)="activeTab.set('sensors')" class="text-left px-4 py-3 rounded-xl font-medium transition
-               hover:bg-gray-100 dark:hover:bg-gray-800" [ngClass]="activeTab() === 'sensors'
-            ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900'
-            : 'text-gray-700 dark:text-gray-300'">
-                Sensor ranges
-            </button>
-
-            <button (click)="activeTab.set('alarms')" class="text-left px-4 py-3 rounded-xl font-medium transition
-               hover:bg-gray-100 dark:hover:bg-gray-800" [ngClass]="activeTab() === 'alarms'
-            ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900'
-            : 'text-gray-700 dark:text-gray-300'">
-                Alarm-drempels
-            </button>
-
         </div>
 
         <!-- RIGHT: Tab content -->
@@ -79,38 +65,6 @@
                    border-gray-300 dark:border-gray-700
                    text-gray-800 dark:text-gray-200">
                     </label>
-                </div>
-            </section>
-
-            <!-- SENSOR RANGES TAB -->
-            <section *ngIf="activeTab() === 'sensors'" formGroupName="sensorRanges" class="space-y-4">
-                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Sensor ranges</h3>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div *ngFor="let sensor of ['temperature','humidity','co2','pressure']"
-                        class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 space-y-2">
-                        <div class="font-semibold capitalize text-gray-700 dark:text-gray-200">{{ sensor }}</div>
-                        <div [formGroupName]="sensor" class="grid grid-cols-2 gap-3">
-                            <input formControlName="min" type="number" class="px-2 py-1 rounded-lg border
-                     bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
-                            <input formControlName="max" type="number" class="px-2 py-1 rounded-lg border
-                     bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ALARMS TAB -->
-            <section *ngIf="activeTab() === 'alarms'" formGroupName="alarms" class="space-y-4">
-                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Alarm-drempels</h3>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <input formControlName="co2Max" type="number" class="px-3 py-2 rounded-xl border
-                 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
-                    <input formControlName="temperatureMin" type="number" class="px-3 py-2 rounded-xl border
-                 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
-                    <input formControlName="temperatureMax" type="number" class="px-3 py-2 rounded-xl border
-                 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
                 </div>
             </section>
 

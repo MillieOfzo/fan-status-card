@@ -1,0 +1,67 @@
+<div class="mx-auto">
+    <h2 class="text-2xl font-bold mb-4 dark:text-gray-100">Status Cards Wizard</h2>
+
+    <!-- Succesmelding -->
+    <div *ngIf="successMessage()" class="mb-4 px-4 py-2 rounded-xl bg-green-500 text-white text-sm">
+        {{ successMessage() }}
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-6">
+
+        <!-- Left: Card list -->
+        <div class="w-full md:w-1/3 space-y-2">
+            <div *ngFor="let card of cards.controls; let i = index"
+                class="bg-gray-50 dark:bg-gray-800 p-3 rounded-xl flex justify-between items-center cursor-pointer"
+                [class.border-blue-500]="selectedCardIndex() === i" [class.border-2]="selectedCardIndex() === i"
+                (click)="selectCard(i)">
+                <span class="capitalize text-gray-700 dark:text-gray-200">{{ card.value.title }}</span>
+                <button (click)="removeCard(i); $event.stopPropagation()"
+                    class="text-red-500 font-bold px-2 py-1 rounded hover:bg-red-100 dark:hover:bg-red-900">×</button>
+            </div>
+            <button (click)="addCard()"
+                class="mt-2 w-full px-3 py-2 rounded-xl bg-green-500 text-white hover:bg-green-600">Nieuwe
+                kaart</button>
+        </div>
+
+        <!-- Right: Card editor -->
+        <div class="w-full md:w-2/3 space-y-4">
+            <div *ngIf="selectedCardIndex() !== null" [formGroup]="cards.controls[selectedCardIndex()!]"
+                class="bg-white dark:bg-gray-900 p-4 rounded-2xl shadow space-y-2">
+                <input formControlName="title" placeholder="Titel"
+                    class="w-full px-3 py-2 rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
+                <input formControlName="source" placeholder="Bron (observable)"
+                    class="w-full px-3 py-2 rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
+                <input formControlName="suffix" placeholder="Suffix"
+                    class="w-full px-3 py-2 rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
+
+                <div class="grid grid-cols-2 gap-2">
+                    <input formControlName="warningMin" type="number" placeholder="Warning Min"
+                        class="px-3 py-2 rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
+                    <input formControlName="errorMin" type="number" placeholder="Error Min"
+                        class="px-3 py-2 rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
+                    <input formControlName="warningMax" type="number" placeholder="Warning Max"
+                        class="px-3 py-2 rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
+                    <input formControlName="errorMax" type="number" placeholder="Error Max"
+                        class="px-3 py-2 rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <input formControlName="okLabel" placeholder="OK label"
+                        class="px-3 py-2 rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
+                    <input formControlName="warningLabel" placeholder="Warning label"
+                        class="px-3 py-2 rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
+                    <input formControlName="errorLabel" placeholder="Error label"
+                        class="px-3 py-2 rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100" />
+                </div>
+            </div>
+
+            <!-- Als er geen kaart geselecteerd is -->
+            <div *ngIf="selectedCardIndex() === null" class="text-gray-500 dark:text-gray-400 p-4">
+                Klik links op een kaart om deze te bewerken.
+            </div>
+
+            <button (click)="save()"
+                class="px-6 py-2 rounded-xl bg-gray-900 text-white hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-white cursor-pointer">Opslaan</button>
+        </div>
+    </div>
+</div>

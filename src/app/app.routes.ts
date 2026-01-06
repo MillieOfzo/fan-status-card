@@ -3,6 +3,7 @@ import { Dashboard } from './pages/dashboard/dashboard';
 import { Temperature } from './pages/temperature/temperature';
 import { Humidity } from './pages/humidity/humidity';
 import { Settings } from './pages/settings/settings';
+import { SettingsWizard } from './pages/settings-wizard/settings-wizard';
 
 export const routes: Routes = [
     {
@@ -33,6 +34,12 @@ export const routes: Routes = [
         path: 'settings',
         component: Settings,
         title: 'Instellingen'
+    },
+
+    {
+        path: 'settings-wizard',
+        component: SettingsWizard,
+        title: 'Wizard'
     },
 
     // fallback

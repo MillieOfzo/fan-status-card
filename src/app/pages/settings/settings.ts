@@ -14,40 +14,13 @@ export class Settings {
   private readonly fb = inject(FormBuilder)
   private readonly settings = inject(SettingsService)
 
-  activeTab = signal<'display' | 'data' | 'sensors' | 'alarms'>('display');
-
-
+  activeTab = signal<'display' | 'data'>('display');
 
   form = this.fb.group({
     darkMode: false,
     dataSource: 'test',
 
     updateIntervalMs: 2000,
-
-    sensorRanges: this.fb.group({
-      temperature: this.fb.group({
-        min: [-10, Validators.required],
-        max: [40, Validators.required]
-      }),
-      humidity: this.fb.group({
-        min: [0],
-        max: [100]
-      }),
-      co2: this.fb.group({
-        min: [1500],
-        max: [3500]
-      }),
-      pressure: this.fb.group({
-        min: [940],
-        max: [1100]
-      })
-    }),
-
-    alarms: this.fb.group({
-      co2Max: [2000],
-      temperatureMin: [-5],
-      temperatureMax: [35]
-    })
   });
 
 

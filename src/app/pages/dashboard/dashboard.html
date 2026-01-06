@@ -1,11 +1,5 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-    @if (temperatureVm$ | async; as temp) {
-    <app-status-card [data]="temp" />
-    } @else {
-    <ng-container [ngTemplateOutlet]="cardSkeleton" />
-    }
-
     @if (humidityVm$ | async; as hum) {
     <app-status-card [data]="hum" />
     } @else {
@@ -24,13 +18,14 @@
     <ng-container [ngTemplateOutlet]="cardSkeleton" />
     }
 
-    @if (staticCards$ | async; as cards) {
-    <ng-container *ngFor="let card of cards">
-        <app-status-card [data]="card" />
+    <!-- Dynamische kaarten -->
+    @if (cardsVm$ | async; as dynamicCards) {
+    <ng-container *ngFor="let card of dynamicCards">
+        <app-status-card [data]="card"></app-status-card>
     </ng-container>
     } @else {
     <ng-container *ngFor="let _ of [1,2,3,4]">
-        <ng-container [ngTemplateOutlet]="cardSkeleton" />
+        <ng-container [ngTemplateOutlet]="cardSkeleton"></ng-container>
     </ng-container>
     }
 

@@ -8,6 +8,7 @@ export class DarkModeService {
     dark = signal<boolean>(this.getInitialState());
 
     constructor() {
+        // pas theme toe bij service init
         this.applyTheme(this.dark());
         this.listenToSystemChanges();
     }
@@ -31,8 +32,10 @@ export class DarkModeService {
     }
 
     private applyTheme(isDark: boolean) {
+        // ✅ forceer altijd de class
         const root = document.documentElement;
-        root.classList.toggle('dark', isDark);
+        if (isDark) root.classList.add('dark');
+        else root.classList.remove('dark');
     }
 
     private listenToSystemChanges() {
@@ -46,3 +49,4 @@ export class DarkModeService {
         });
     }
 }
+

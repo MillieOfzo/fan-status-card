@@ -24,13 +24,6 @@ In the folder where `package.json` resides, run:
 npm install
 ```
 
-Clone the project
-In the folder where package.json resides run
-
-```bash
-npm install
-```
-
 Start the server by running:
 
 ```bash

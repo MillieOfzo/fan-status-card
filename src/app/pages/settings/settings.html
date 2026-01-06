@@ -1,0 +1,127 @@
+<div class="mx-auto">
+
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+        Instellingen
+    </h2>
+
+    <div class="flex flex-col md:flex-row gap-6">
+
+        <!-- LEFT: Vertical Tabs -->
+        <div class="w-full md:w-1/4 flex flex-col space-y-2">
+
+            <button (click)="activeTab.set('display')" class="text-left px-4 py-3 rounded-xl font-medium transition
+               hover:bg-gray-100 dark:hover:bg-gray-800" [ngClass]="activeTab() === 'display'
+            ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900'
+            : 'text-gray-700 dark:text-gray-300'">
+                Weergave
+            </button>
+
+            <button (click)="activeTab.set('data')" class="text-left px-4 py-3 rounded-xl font-medium transition
+               hover:bg-gray-100 dark:hover:bg-gray-800" [ngClass]="activeTab() === 'data'
+            ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900'
+            : 'text-gray-700 dark:text-gray-300'">
+                Databron & Interval
+            </button>
+
+            <button (click)="activeTab.set('sensors')" class="text-left px-4 py-3 rounded-xl font-medium transition
+               hover:bg-gray-100 dark:hover:bg-gray-800" [ngClass]="activeTab() === 'sensors'
+            ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900'
+            : 'text-gray-700 dark:text-gray-300'">
+                Sensor ranges
+            </button>
+
+            <button (click)="activeTab.set('alarms')" class="text-left px-4 py-3 rounded-xl font-medium transition
+               hover:bg-gray-100 dark:hover:bg-gray-800" [ngClass]="activeTab() === 'alarms'
+            ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900'
+            : 'text-gray-700 dark:text-gray-300'">
+                Alarm-drempels
+            </button>
+
+        </div>
+
+        <!-- RIGHT: Tab content -->
+        <div class="w-full md:w-3/4 bg-white dark:bg-gray-900 rounded-2xl shadow p-6" [formGroup]="form">
+
+            <!-- DISPLAY TAB -->
+            <section *ngIf="activeTab() === 'display'" class="space-y-4">
+                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Weergave & Dark mode</h3>
+
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" [checked]="darkMode.dark()" (change)="darkMode.toggle()"
+                        class="h-4 w-4 accent-gray-700">
+                    <span class="text-gray-700 dark:text-gray-300">Dark mode (OS voorkeur standaard)</span>
+                </label>
+
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Op dit moment: <b>{{ darkMode.dark() ? 'Dark' : 'Light' }}</b>
+                </p>
+            </section>
+
+            <!-- DATA TAB -->
+            <section *ngIf="activeTab() === 'data'" class="space-y-4">
+
+                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Databron & Update-interval</h3>
+
+                <div class="space-y-3">
+                    <label class="text-sm text-gray-600 dark:text-gray-400">
+                        Databron
+                        <select formControlName="dataSource" class="mt-1 w-60 px-3 py-2 rounded-xl border bg-gray-50 dark:bg-gray-800
+                   border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200">
+                            <option value="live">Live</option>
+                            <option value="test">Test / simulatie</option>
+                        </select>
+                    </label>
+
+                    <label class="text-sm text-gray-600 dark:text-gray-400">
+                        Update-interval (ms)
+                        <input type="number" formControlName="updateIntervalMs" class="mt-1 w-36 px-3 py-2 rounded-xl border
+                   bg-gray-50 dark:bg-gray-800
+                   border-gray-300 dark:border-gray-700
+                   text-gray-800 dark:text-gray-200">
+                    </label>
+                </div>
+            </section>
+
+            <!-- SENSOR RANGES TAB -->
+            <section *ngIf="activeTab() === 'sensors'" formGroupName="sensorRanges" class="space-y-4">
+                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Sensor ranges</h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div *ngFor="let sensor of ['temperature','humidity','co2','pressure']"
+                        class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 space-y-2">
+                        <div class="font-semibold capitalize text-gray-700 dark:text-gray-200">{{ sensor }}</div>
+                        <div [formGroupName]="sensor" class="grid grid-cols-2 gap-3">
+                            <input formControlName="min" type="number" class="px-2 py-1 rounded-lg border
+                     bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
+                            <input formControlName="max" type="number" class="px-2 py-1 rounded-lg border
+                     bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ALARMS TAB -->
+            <section *ngIf="activeTab() === 'alarms'" formGroupName="alarms" class="space-y-4">
+                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Alarm-drempels</h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <input formControlName="co2Max" type="number" class="px-3 py-2 rounded-xl border
+                 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
+                    <input formControlName="temperatureMin" type="number" class="px-3 py-2 rounded-xl border
+                 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
+                    <input formControlName="temperatureMax" type="number" class="px-3 py-2 rounded-xl border
+                 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
+                </div>
+            </section>
+
+            <div class="pt-4 flex justify-end">
+                <button (click)="save()" class="px-5 py-2 rounded-xl font-medium
+               bg-gray-900 text-white hover:bg-gray-700
+               dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-white">
+                    Opslaan
+                </button>
+            </div>
+
+        </div> <!-- End right content -->
+    </div> <!-- End flex -->
+</div>

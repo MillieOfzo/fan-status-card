@@ -1,0 +1,35 @@
+<div
+    class="flex flex-auto flex-col overflow-hidden rounded-2xl p-6 shadow transition-all duration-300 bg-white dark:bg-gray-800 dark:text-gray-100">
+    <h3 class="text-lg font-bold mb-4 dark:text-gray-100">
+        {{ config.title}}
+    </h3>
+    <div class="flex items-end justify-between gap-3 h-56">
+
+        <div *ngFor="let d of feedData()" class="flex flex-col items-center flex-1 select-none">
+
+            <!-- Bar container / track -->
+            <div class="relative w-13 h-45 rounded-lg overflow-hidden
+                        bg-gray-200 dark:bg-gray-700">
+
+                <!-- Fill -->
+                <div class="absolute bottom-0 w-full transition-all duration-300" [ngClass]="getBarColor(d.value)"
+                    [style.height]="getHeightPx(d.value)">
+                    <!-- Top border highlight -->
+                    <div class="h-1 w-full" [ngClass]="getBarBorderColor(d.value)"></div>
+                </div>
+
+            </div>
+
+            <!-- value -->
+            <span class="mt-1 text-xs font-semibold dark:text-gray-200">
+                {{ d.value }} {{ config.suffix }}
+            </span>
+
+            <!-- day -->
+            <span class="text-sm mt-1 dark:text-gray-300">
+                {{ d.day }}
+            </span>
+        </div>
+
+    </div>
+</div>

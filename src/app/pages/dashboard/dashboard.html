@@ -23,6 +23,8 @@
     <ng-container *ngFor="let card of dynamicCards">
         <app-status-card [data]="card"></app-status-card>
     </ng-container>
+    <app-feed-intake [config]="foodConfig"></app-feed-intake>
+    <app-feed-intake [config]="waterConfig"></app-feed-intake>
     } @else {
     <ng-container *ngFor="let _ of [1,2,3,4]">
         <ng-container [ngTemplateOutlet]="cardSkeleton"></ng-container>

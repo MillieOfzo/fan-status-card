@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { StatusCard } from '../../shared/ui/status-card/status-card';
 import { combineLatest, map, Observable, switchMap, timer } from 'rxjs';
 import { AlarmTestDataService } from '../../core/data/alarm-test-data.service';
@@ -11,10 +11,11 @@ import { CommonModule } from '@angular/common';
 import { SettingsService } from '../settings/settings.service';
 import { DynamicEvaluator } from '../../core/status/dynamic.evaluator';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { FeedDay, FeedIntake, FeedIntakeConfig } from '../../shared/ui/feed-intake/feed-intake';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [StatusCard, CommonModule],
+  imports: [StatusCard, FeedIntake, CommonModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -31,6 +32,38 @@ export class Dashboard {
     warningMin: 1800,
     errorMin: 2800
   });
+
+  foodConfig: FeedIntakeConfig = {
+    title: 'Voedselinname per dag (L)',
+    suffix: 'g',
+    feedData: [
+      { day: 'Ma', value: 3600 },
+      { day: 'Di', value: 3450 },
+      { day: 'Wo', value: 3200 },
+      { day: 'Do', value: 3180 },
+      { day: 'Vr', value: 2810 },
+      { day: 'Za', value: 2600 },
+      { day: 'Zo', value: 2420 },
+    ],
+    warningMin: 2800,
+    errorMin: 2500,
+  };
+
+  waterConfig: FeedIntakeConfig = {
+    title: 'Water Intake per dag (g)',
+    suffix: 'L',
+    feedData: [
+      { day: 'Ma', value: 12 },
+      { day: 'Di', value: 10.5 },
+      { day: 'Wo', value: 9.8 },
+      { day: 'Do', value: 11 },
+      { day: 'Vr', value: 8.7 },
+      { day: 'Za', value: 7.5 },
+      { day: 'Zo', value: 6.9 },
+    ],
+    warningMin: 9,
+    errorMin: 7,
+  };
 
   temperatureVm$ = combineLatest([
     this.data.temperature$,

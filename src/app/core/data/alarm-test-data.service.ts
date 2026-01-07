@@ -97,9 +97,9 @@ export class AlarmTestDataService {
 
         // Simuleer dynamiek: random toevoegen/verwijderen van alarms
         // 5 sec
-        timer(1000, 5000).subscribe(() => this.randomAlarmAdd());
+        timer(1000, 15000).subscribe(() => this.randomAlarmAdd());
         // 15 sec
-        interval(15000).subscribe(() => this.randomAlarmRemove());
+        interval(10000).subscribe(() => this.randomAlarmRemove());
     }
 
     private randomAlarmAdd() {
